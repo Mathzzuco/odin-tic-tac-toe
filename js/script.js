@@ -37,13 +37,10 @@ function createPlayer(name) {
   const player = {
     name : name,
     score : 0,
-    symbol : "X",
+    symbol : null,
     increaseScore : () => {
       player.score++;
     },
-    changeSymbol : () => {
-      player.symbol = "O";
-    }
   }
   return player;
 }
@@ -54,6 +51,10 @@ function createGame(gameBoard, player1, player2) {
     players : [player1, player2],
     turn : player1,
     winner : null,
+    placeSymbols : () => {
+      game.players[0].symbol = "X";
+      game.players[1].symbol = "O";
+    },
     changeTurn : () => {
       if (game.turn == player1) {
         game.turn = player2;
@@ -68,6 +69,11 @@ function createGame(gameBoard, player1, player2) {
     play : (y, x) => {
       if (game.board[y][x] == "-") {
         game.board[y][x] = game.turn.symbol;
+        if (checkWin(game.board)) {
+          game.declareWinner()
+        } else {
+          game.changeTurn();
+        }
       } else {
         console.log("invalid position.")
       }
@@ -79,38 +85,61 @@ function createGame(gameBoard, player1, player2) {
 function playGame() {
   const board = createGameBoard().board;
 
-  const player1 = createPlayer("Aron");
-  const player2 = createPlayer("Jane");
-  player2.changeSymbol();
-
+  if (typeof player1 === "undefined") {
+    player1 = createPlayer("Aron");
+    player2 = createPlayer("Jane");
+  }
   const game = createGame(board, player1, player2);
   // game.changeTurn();
   // game.declareWinner();
-  game.play(0, 1);
-  game.play(0, 1);
+  game.placeSymbols();
+  while (checkBoardSpace(game.board)) {
+    game.play(parseInt(window.prompt()), parseInt(window.prompt()));
+    console.log(game.board[0]);
+    console.log(game.board[1]);
+    console.log(game.board[2]);
+    if (checkWin(game.board)) {
+      return game;
+    }
+  }
   return game;
 }
 
-function checkRows() {
+function checkBoardSpace(board) {
+  if(board[0].includes("-") || board[1].includes("-") || board[2].includes("-")) {
+    return true;
+  }
+  return false;
+}
+
+function checkWin(board) {
+  if (checkRows(board) || checkColumns(board) || checkDiagonals(board)) {
+    return true;
+  }
+  return false;
+}
+
+function checkRows(board) {
   for (y = 0; y < 3; y++) {
-    if (board[y][0] == player.symbol && board[y][1] == board[y][0] && board[y][2] == board[y][0]) {
+    if (board[y][0] != "-" && board[y][1] == board[y][0] && board[y][2] == board[y][0]) {
       return true;
     }
   }
   return false
 }
 
-function checkColumns() {
+function checkColumns(board) {
   for (x = 0; x < 3; x++) {
-    if (board[0][x] == player.symbol && board[1][x] == board[0][x] && board[2][x] == board[0][x]) {
+    if (board[0][x] != "-" && board[1][x] == board[0][x] && board[2][x] == board[0][x]) {
       return true;
     }
   }
   return false;
 }
 
-function checkDiagonals() {
-  if (board[0][2] == player.symbol && board[1][1] == board[0][2] && board[2][0] == board[0][2]) {
+function checkDiagonals(board) {
+  if ((board[2][0] != "-" && board[1][1] == board[2][0] && board[0][2] == board[2][0]) || 
+    (board[0][0] != "-" && board[1][1] == board[0][0] && board[2][2] == board[0][0])) {
     return true;
   }
   return false;
