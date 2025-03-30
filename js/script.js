@@ -35,6 +35,43 @@ function createGame(gameBoard, player1, player2) {
       game.players[0].symbol = "X";
       game.players[1].symbol = "O";
     },
+    checkWin : () => {
+      if (game.checkRows() || game.checkColumns() || game.checkDiagonals()) {
+        return true;
+      }
+      return false;
+    },
+    checkRows : () => {
+      for (let y = 0; y < 3; y++) {
+        if (game.board[y][0] != "-" && game.board[y][1] == game.board[y][0] && game.board[y][2] == game.board[y][0]) {
+          return true;
+        }
+      }
+      return false
+    },
+    checkColumns : () => {
+      for (let x = 0; x < 3; x++) {
+        if (game.board[0][x] != "-" && game.board[1][x] == game.board[0][x] && game.board[2][x] == game.board[0][x]) {
+          return true;
+        }
+      }
+      return false;
+    },
+    checkDiagonals : () => {
+      if ((game.board[2][0] != "-" && game.board[1][1] == game.board[2][0] && game.board[0][2] == game.board[2][0]) || 
+          (game.board[0][0] != "-" && game.board[1][1] == game.board[0][0] && game.board[2][2] == game.board[0][0])) {
+          return true;
+      }
+      return false;
+    },
+    // checks if there is still playable spaces in the board,
+    // returns true if there is
+    checkBoardSpace : () => {
+      if(game.board[0].includes("-") || game.board[1].includes("-") || game.board[2].includes("-")) {
+        return true;
+      }
+      return false;
+    },
     changeTurn : () => {
       if (game.turn == player1) {
         game.turn = player2;
@@ -53,7 +90,7 @@ function createGame(gameBoard, player1, player2) {
     play : (y, x) => {
       if (game.board[y][x] == "-") {
         game.board[y][x] = game.turn.symbol;
-        if (checkWin(game.board)) {
+        if (game.checkWin(game.board)) {
           game.declareWinner()
         } else {
           game.changeTurn();
@@ -77,13 +114,14 @@ function playGame() {
   // when start working on html, it will be replaced by something else
   const test = true;
   while (test) {
+    console.log("game started");
     const board = createGameBoard().board;
 
     const game = createGame(board, player1, player2);
     game.placeSymbols();
 
     // loops plays until either, there is a winning position or the board is full
-    while (!checkWin(game.board) && checkBoardSpace(game.board)) {
+    while (!game.checkWin() && game.checkBoardSpace()) {
       // the check for winning move is done in the play function of game
       // both the window.prompt() will be replaced with values that will come from buttons in html
       game.play(parseInt(window.prompt()), parseInt(window.prompt()));
@@ -93,51 +131,5 @@ function playGame() {
     }
     console.log(game.players[0]);
     console.log(game.players[1]);
-    console.log(game.board[0]);
-    console.log(game.board[1]);
-    console.log(game.board[2]);
   }
-}
-// checks if there is still playable spaces in the board,
-// returns true if there is
-function checkBoardSpace(board) {
-  if(board[0].includes("-") || board[1].includes("-") || board[2].includes("-")) {
-    return true;
-  }
-  return false;
-}
-
-// checks if there is a winning position currently in the game,
-// returns true if there is
-function checkWin(board) {
-  if (checkRows(board) || checkColumns(board) || checkDiagonals(board)) {
-    return true;
-  }
-  return false;
-}
-
-function checkRows(board) {
-  for (let y = 0; y < 3; y++) {
-    if (board[y][0] != "-" && board[y][1] == board[y][0] && board[y][2] == board[y][0]) {
-      return true;
-    }
-  }
-  return false
-}
-
-function checkColumns(board) {
-  for (let x = 0; x < 3; x++) {
-    if (board[0][x] != "-" && board[1][x] == board[0][x] && board[2][x] == board[0][x]) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function checkDiagonals(board) {
-  if ((board[2][0] != "-" && board[1][1] == board[2][0] && board[0][2] == board[2][0]) || 
-    (board[0][0] != "-" && board[1][1] == board[0][0] && board[2][2] == board[0][0])) {
-    return true;
-  }
-  return false;
 }
