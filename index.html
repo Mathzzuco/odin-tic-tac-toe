@@ -9,6 +9,36 @@
     <script src="js/script.js" defer></script>
 </head>
 <body>
-    
+    <div id="page-container">
+        <div class="main-wrapper">
+            <main>
+                <div class="register-text-box">
+                    <h2>Choose the name of the players</h2>
+                </div>
+                <form action="" method="POST">
+                    <label for="player1">Player 1 ("X")
+                        <input type="text" name="player1" id="player1">
+                    </label>
+                    <label for="player2">Player 2 ("O")
+                        <input type="text" name="player2" id="player2">
+                    </label>
+                    <button type="submit">Start game</button>
+                </form>
+                <div class="game-section">
+                    <div class="players-info-box">
+                        <span>Adam - 0</span>
+                        <span>3 - James</span>
+                        <span>James won the game!</span>
+                    </div>
+                    <div class="gameboard-wrapper">
+                        <div class="gameboard">
+
+                        </div>
+                    </div>
+                    <button class="reset-button">Reset game</button>
+                </div>
+            </main>
+        </div>
+    </div>
 </body>
 </html>
