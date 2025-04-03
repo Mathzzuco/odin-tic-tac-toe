@@ -1,0 +1,11 @@
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
+}
+
+.gameboard button {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+}

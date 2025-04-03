@@ -87,11 +87,12 @@ function createGame(gameBoard, player1, player2) {
     // x is the number of the column 0-2
     // the function checks if the space is free to put the current playing player symbol
     // if its a winning move, the winner is declared and the score of the player is increased
-    play : (y, x) => {
+    play : (y, x, boardSquare) => {
       if (game.board[y][x] == "-") {
         game.board[y][x] = game.turn.symbol;
+        boardSquare.innerHTML = game.turn.symbol;
         if (game.checkWin(game.board)) {
-          game.declareWinner()
+          game.declareWinner();
         } else {
           game.changeTurn();
         }
@@ -110,26 +111,44 @@ function playGame() {
     player1 = createPlayer("Aron");
     player2 = createPlayer("Jane");
   }
-  // test variable to make the game keep playing through multiple matches
-  // when start working on html, it will be replaced by something else
-  const test = true;
-  while (test) {
-    console.log("game started");
-    const board = createGameBoard().board;
+
+  console.log("game started");
+  const board = createGameBoard().board;
+  const boardHTML = [];
+  for(let y = 0; y<3; y++) {
+    for(let x = 0; x<3; x++) {
+      const boardSquare = document.createElement("button");
+      boardSquare.addEventListener("click", function() {
+        if(!game.checkWin() && game.checkBoardSpace()) {
+          game.play(y, x, boardSquare);
+          console.log(game.board[0]);
+          console.log(game.board[1]);
+          console.log(game.board[2]);
+          console.log(game.players);
+        } else {
+          console.log("full board");
+        }
+      })
+      document.querySelector(".gameboard").appendChild(boardSquare);
+      boardHTML.push(boardSquare);
+    }
+  }
+    document.querySelector(".reset-button").addEventListener("click", function() {
+      // if(!game.checkWin() && game.checkBoardSpace()) {
+      // game.play(0, 0);
+      // game.play(1, 0);
+      // game.play(1, 1);
+      // game.play(2, 0);
+      // game.play(2, 2);
+      // console.log(game.board[0]);
+      // console.log(game.board[1]);
+      // console.log(game.board[2]);
+      // console.log(game.players);
+      // } else {
+      //   console.log("full board");
+      // }
+    })
 
     const game = createGame(board, player1, player2);
     game.placeSymbols();
-
-    // loops plays until either, there is a winning position or the board is full
-    while (!game.checkWin() && game.checkBoardSpace()) {
-      // the check for winning move is done in the play function of game
-      // both the window.prompt() will be replaced with values that will come from buttons in html
-      game.play(parseInt(window.prompt()), parseInt(window.prompt()));
-      console.log(game.board[0]);
-      console.log(game.board[1]);
-      console.log(game.board[2]);
-    }
-    console.log(game.players[0]);
-    console.log(game.players[1]);
-  }
 }
