@@ -105,12 +105,9 @@ function createGame(gameBoard, player1, player2) {
 }
 
 function playGame() {
-  // checks if the players already exist
-  // this will be used to keep scores through multiple matches
-  if (typeof player1 === "undefined") {
-    player1 = createPlayer("Aron");
-    player2 = createPlayer("Jane");
-  }
+  document.querySelectorAll(".board-square").forEach((square) => {
+    square.remove();
+  })
 
   console.log("game started");
   const board = createGameBoard().board;
@@ -118,6 +115,7 @@ function playGame() {
   for(let y = 0; y<3; y++) {
     for(let x = 0; x<3; x++) {
       const boardSquare = document.createElement("button");
+      boardSquare.classList.add("board-square");
       boardSquare.addEventListener("click", function() {
         if(!game.checkWin() && game.checkBoardSpace()) {
           game.play(y, x, boardSquare);
@@ -133,22 +131,21 @@ function playGame() {
       boardHTML.push(boardSquare);
     }
   }
-    document.querySelector(".reset-button").addEventListener("click", function() {
-      // if(!game.checkWin() && game.checkBoardSpace()) {
-      // game.play(0, 0);
-      // game.play(1, 0);
-      // game.play(1, 1);
-      // game.play(2, 0);
-      // game.play(2, 2);
-      // console.log(game.board[0]);
-      // console.log(game.board[1]);
-      // console.log(game.board[2]);
-      // console.log(game.players);
-      // } else {
-      //   console.log("full board");
-      // }
-    })
+  document.querySelector(".reset-button").addEventListener("click", function() {
+    playGame()
+  })
 
-    const game = createGame(board, player1, player2);
-    game.placeSymbols();
+  const game = createGame(board, player1, player2);
+  game.placeSymbols();
 }
+
+document.querySelector("button[type=submit]").addEventListener("click", function (e) {
+  e.preventDefault();
+  const player1Name = document.getElementById("player1-input").value;
+  const player2Name = document.getElementById("player2-input").value;
+  if (player1Name && player2Name) {
+    player1 = createPlayer(player1Name);
+    player2 = createPlayer(player2Name);
+    playGame();
+  }
+})
