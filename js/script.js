@@ -70,6 +70,7 @@ function createGame(gameBoard, player1, player2) {
       if(game.board[0].includes("-") || game.board[1].includes("-") || game.board[2].includes("-")) {
         return true;
       }
+      document.querySelector(".winner-display").innerHTML = "Tie";
       return false;
     },
     changeTurn : () => {
@@ -81,10 +82,14 @@ function createGame(gameBoard, player1, player2) {
     },
     declareWinner : () => {
       game.winner = game.turn.name;
+      document.querySelector(".winner-display").innerHTML = game.winner + " won the game!";
       game.turn.increaseScore();
+      document.querySelector(".player1").innerHTML = game.players[0].name + " - " + game.players[0].score;
+      document.querySelector(".player2").innerHTML = game.players[1].score + " - " + game.players[1].name;
     },
     // y is the number of the row 0-2
     // x is the number of the column 0-2
+    // boardSquare is the square clicked in html to put the player symbol
     // the function checks if the space is free to put the current playing player symbol
     // if its a winning move, the winner is declared and the score of the player is increased
     play : (y, x, boardSquare) => {
@@ -105,6 +110,7 @@ function createGame(gameBoard, player1, player2) {
 }
 
 function playGame() {
+  document.querySelector(".winner-display").innerHTML = "";
   document.querySelectorAll(".board-square").forEach((square) => {
     square.remove();
   })
@@ -119,6 +125,7 @@ function playGame() {
       boardSquare.addEventListener("click", function() {
         if(!game.checkWin() && game.checkBoardSpace()) {
           game.play(y, x, boardSquare);
+          game.checkBoardSpace();
           console.log(game.board[0]);
           console.log(game.board[1]);
           console.log(game.board[2]);
@@ -145,7 +152,9 @@ document.querySelector("button[type=submit]").addEventListener("click", function
   const player2Name = document.getElementById("player2-input").value;
   if (player1Name && player2Name) {
     player1 = createPlayer(player1Name);
+    document.querySelector(".player1").innerHTML = player1Name + " - " + " 0";
     player2 = createPlayer(player2Name);
+    document.querySelector(".player2").innerHTML = "0 " + " - " + player2Name;
     playGame();
   }
 })
