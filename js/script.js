@@ -96,6 +96,7 @@ function createGame(gameBoard, player1, player2) {
       if (game.board[y][x] == "-") {
         game.board[y][x] = game.turn.symbol;
         boardSquare.innerHTML = game.turn.symbol;
+        boardSquare.setAttribute("filled", "true");
         if (game.checkWin(game.board)) {
           game.declareWinner();
         } else {
@@ -122,6 +123,7 @@ function playGame() {
     for(let x = 0; x<3; x++) {
       const boardSquare = document.createElement("button");
       boardSquare.classList.add("board-square");
+      boardSquare.setAttribute("filled", "false");
       boardSquare.addEventListener("click", function() {
         if(!game.checkWin() && game.checkBoardSpace()) {
           game.play(y, x, boardSquare);
@@ -132,6 +134,16 @@ function playGame() {
           console.log(game.players);
         } else {
           console.log("full board");
+        }
+      })
+      boardSquare.addEventListener("mouseover", function() {
+        if (boardSquare.innerHTML == "" && !game.winner) {
+          boardSquare.innerHTML = game.turn.symbol;
+        }
+      })
+      boardSquare.addEventListener("mouseout", function() {
+        if (boardSquare.getAttribute("filled") == "false") {
+          boardSquare.innerHTML = "";
         }
       })
       document.querySelector(".gameboard").appendChild(boardSquare);
