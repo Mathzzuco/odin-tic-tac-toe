@@ -31,10 +31,14 @@ function createGame(gameBoard, player1, player2) {
     players : [player1, player2],
     turn : player1,
     winner : null,
+
+    // places the symbols on the players
+    // player 1 will always be X and player 2 will always be O
     placeSymbols : () => {
       game.players[0].symbol = "X";
       game.players[1].symbol = "O";
     },
+    // does all the checks to see if there is a winner
     checkWin : () => {
       if (game.checkRows() || game.checkColumns() || game.checkDiagonals()) {
         return true;
@@ -80,6 +84,10 @@ function createGame(gameBoard, player1, player2) {
         game.turn = player1;
       }
     },
+
+    // declares the player that is currently playing as the winner
+    // a message declaring the winner appears and they score goes up by one
+    // then players scores get updated
     declareWinner : () => {
       game.winner = game.turn.name;
       document.querySelector(".winner-display").innerHTML = game.winner + " won the game!";
@@ -87,6 +95,7 @@ function createGame(gameBoard, player1, player2) {
       document.querySelector(".player1").innerHTML = game.players[0].name + " - " + game.players[0].score;
       document.querySelector(".player2").innerHTML = game.players[1].score + " - " + game.players[1].name;
     },
+
     // y is the number of the row 0-2
     // x is the number of the column 0-2
     // boardSquare is the square clicked in html to put the player symbol
@@ -111,6 +120,7 @@ function createGame(gameBoard, player1, player2) {
 }
 
 function playGame() {
+  // clears the winner text and removes previous game board squares
   document.querySelector(".winner-display").innerHTML = "";
   document.querySelectorAll(".board-square").forEach((square) => {
     square.remove();
@@ -118,12 +128,19 @@ function playGame() {
 
   console.log("game started");
   const board = createGameBoard().board;
-  const boardHTML = [];
+
+  // creates the game board squares
   for(let y = 0; y<3; y++) {
     for(let x = 0; x<3; x++) {
       const boardSquare = document.createElement("button");
+
+      // add a class for css styling and an attribute to check if the board square was filled
+      // the attribute is used in the mouseout event
       boardSquare.classList.add("board-square");
       boardSquare.setAttribute("filled", "false");
+
+      // checks if the game is over before playing, then checks if the game has tied after play
+      // the second check is used to display the tie text without having to try to play with a full board
       boardSquare.addEventListener("click", function() {
         if(!game.checkWin() && game.checkBoardSpace()) {
           game.play(y, x, boardSquare);
@@ -136,20 +153,26 @@ function playGame() {
           console.log("full board");
         }
       })
+
+      // displays the players symbol when hovering a board square
+      // has checks to see if there is already a symbol and if the game is over with spaces left
       boardSquare.addEventListener("mouseover", function() {
         if (boardSquare.innerHTML == "" && !game.winner) {
           boardSquare.innerHTML = game.turn.symbol;
         }
       })
+
+      // removes the temporary hover player symbol if the space wasn't filled
       boardSquare.addEventListener("mouseout", function() {
         if (boardSquare.getAttribute("filled") == "false") {
           boardSquare.innerHTML = "";
         }
       })
       document.querySelector(".gameboard").appendChild(boardSquare);
-      boardHTML.push(boardSquare);
     }
   }
+
+  // reset button starts the game again with the same players
   document.querySelector(".reset-button").addEventListener("click", function() {
     playGame()
   })
@@ -158,15 +181,27 @@ function playGame() {
   game.placeSymbols();
 }
 
+// logic for pressing the start game button
+// the button is used for starting and restarting new games
+// allows new players to be create, overwriting old ones, meaning scores and names will be changed
 document.querySelector("button[type=submit]").addEventListener("click", function (e) {
   e.preventDefault();
-  const player1Name = document.getElementById("player1-input").value;
-  const player2Name = document.getElementById("player2-input").value;
-  if (player1Name && player2Name) {
+  // takes names from the form
+  const player1Name = document.getElementById("player1-input").value.trim();
+  const player2Name = document.getElementById("player2-input").value.trim();
+
+  // verifies if they aren't blank and creates the players
+  if (player1Name && player2Name) {  
     player1 = createPlayer(player1Name);
     document.querySelector(".player1").innerHTML = player1Name + " - " + " 0";
     player2 = createPlayer(player2Name);
     document.querySelector(".player2").innerHTML = "0 " + " - " + player2Name;
+
+    // clears the form inputs
+    document.getElementById("player1-input").value = "";
+    document.getElementById("player2-input").value = "";
+
+    // starts game
     playGame();
   }
 })
