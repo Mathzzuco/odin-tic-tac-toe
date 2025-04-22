@@ -17,26 +17,37 @@
                     <h2>Choose the name of the players</h2>
                 </div>
                 <form action="" method="POST">
-                    <label for="player1">Player 1 ("X")
-                        <input type="text" id="player1-input" required>
-                    </label>
-                    <label for="player2">Player 2 ("O")
-                        <input type="text" id="player2-input" required>
-                    </label>
-                    <button type="submit">Start game</button>
+                    <section class="player-inputs">
+                        <label for="player1">Player 1 ("X")
+                            <input type="text" id="player1-input" required>
+                        </label>
+                        <label for="player2">Player 2 ("O")
+                            <input type="text" id="player2-input" required>
+                        </label>
+                    </section>
+                    
+                    <div class="buttons">
+                        <button class="reset-button">Clear Board</button>
+                        <button type="submit">Start match</button>
+                    </div>
+
                 </form>
+                
                 <div class="game-section">
                     <div class="players-info-box">
-                        <span class="player-display player1"></span>
-                        <span class="player-display player2"></span>
-                        <span class="winner-display">James won the game!</span>
+                        <div class="player1-display">
+                            <span class="player-display player1"></span>
+                        </div>
+                        <div class="player2-display">
+                            <span class="player-display player2"></span>
+                        </div>
                     </div>
+                    <span class="winner-display"></span>
                     <div class="gameboard-wrapper">
                         <div class="gameboard">
 
                         </div>
                     </div>
-                    <button class="reset-button">Reset game</button>
                 </div>
             </main>
         </div>

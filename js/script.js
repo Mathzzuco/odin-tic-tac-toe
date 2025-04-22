@@ -75,6 +75,7 @@ function createGame(gameBoard, player1, player2) {
         return true;
       }
       document.querySelector(".winner-display").innerHTML = "Tie";
+      document.querySelector(".reset-button").disabled = false;
       return false;
     },
     changeTurn : () => {
@@ -91,9 +92,10 @@ function createGame(gameBoard, player1, player2) {
     declareWinner : () => {
       game.winner = game.turn.name;
       document.querySelector(".winner-display").innerHTML = game.winner + " won the game!";
+      document.querySelector(".reset-button").disabled = false;
       game.turn.increaseScore();
-      document.querySelector(".player1").innerHTML = game.players[0].name + " - " + game.players[0].score;
-      document.querySelector(".player2").innerHTML = game.players[1].score + " - " + game.players[1].name;
+      document.querySelector(".player1").innerHTML = "(X) " + game.players[0].name + " - " + game.players[0].score;
+      document.querySelector(".player2").innerHTML = game.players[1].score + " - " + game.players[1].name + " (O)";
     },
 
     // y is the number of the row 0-2
@@ -125,6 +127,8 @@ function playGame() {
   document.querySelectorAll(".board-square").forEach((square) => {
     square.remove();
   })
+
+  document.querySelector(".reset-button").disabled = true;
 
   console.log("game started");
   const board = createGameBoard().board;
@@ -173,7 +177,8 @@ function playGame() {
   }
 
   // reset button starts the game again with the same players
-  document.querySelector(".reset-button").addEventListener("click", function() {
+  document.querySelector(".reset-button").addEventListener("click", function (e) {
+    e.preventDefault();
     playGame()
   })
 
@@ -192,10 +197,13 @@ document.querySelector("button[type=submit]").addEventListener("click", function
 
   // verifies if they aren't blank and creates the players
   if (player1Name && player2Name) {  
+    document.querySelector(".reset-button").style.display = "inline";
+    document.querySelector("button[type=submit]").innerHTML = "Start new Match";
+
     player1 = createPlayer(player1Name);
-    document.querySelector(".player1").innerHTML = player1Name + " - " + " 0";
+    document.querySelector(".player1").innerHTML = "(X) " + player1Name + " - " + " 0";
     player2 = createPlayer(player2Name);
-    document.querySelector(".player2").innerHTML = "0 " + " - " + player2Name;
+    document.querySelector(".player2").innerHTML = "0 " + " - " + player2Name + " (O)";
 
     // clears the form inputs
     document.getElementById("player1-input").value = "";
@@ -203,5 +211,7 @@ document.querySelector("button[type=submit]").addEventListener("click", function
 
     // starts game
     playGame();
+  } else {
+    alert("One or both names are missing. Please fill both fields before starting a new match.");
   }
 })

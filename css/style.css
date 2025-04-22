@@ -8,17 +8,78 @@ body {
 }
 
 .main-wrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
     margin: 0 10vw;
+    background: #ffb048;
 }
 
 main {
+    width: 70%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
 main h1 {
-    align-self: center;
     font-size: calc(2vw + 3vh);
+    font-weight: bolder;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* form label {
+    display: flex;
+    flex-direction: column;
+} */
+
+.player-inputs {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5%;
+}
+
+.player-inputs label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.reset-button {
+    display: none;
+}
+
+.game-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.players-info-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.player1-display {
+    display: flex;
+    justify-content: right;
+}
+
+.winner-display {
+    display: block;
+    min-height: 1rem;
 }
 
 .gameboard {
