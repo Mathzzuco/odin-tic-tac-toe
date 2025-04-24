@@ -91,11 +91,11 @@ function createGame(gameBoard, player1, player2) {
     // then players scores get updated
     declareWinner : () => {
       game.winner = game.turn.name;
-      document.querySelector(".winner-display").innerHTML = game.winner + " won the game!";
+      document.querySelector(".winner-display").innerHTML = `${game.winner} won the game!`;
       document.querySelector(".reset-button").disabled = false;
       game.turn.increaseScore();
-      document.querySelector(".player1").innerHTML = "(X) " + game.players[0].name + " - " + game.players[0].score;
-      document.querySelector(".player2").innerHTML = game.players[1].score + " - " + game.players[1].name + " (O)";
+      document.querySelector(".player1").innerHTML = `(X) ${game.players[0].name} - ${game.players[0].score}`;
+      document.querySelector(".player2").innerHTML = `${game.players[1].score} - ${game.players[1].name} (O)`;
     },
 
     // y is the number of the row 0-2
@@ -197,13 +197,15 @@ document.querySelector("button[type=submit]").addEventListener("click", function
 
   // verifies if they aren't blank and creates the players
   if (player1Name && player2Name) {  
+    document.querySelector(".register-text").innerHTML = "";
     document.querySelector(".reset-button").style.display = "inline";
+    document.querySelector(".gameboard").style.display = "grid";
     document.querySelector("button[type=submit]").innerHTML = "Start new Match";
 
     player1 = createPlayer(player1Name);
-    document.querySelector(".player1").innerHTML = "(X) " + player1Name + " - " + " 0";
+    document.querySelector(".player1").innerHTML = `(X) ${player1Name} - 0`;
     player2 = createPlayer(player2Name);
-    document.querySelector(".player2").innerHTML = "0 " + " - " + player2Name + " (O)";
+    document.querySelector(".player2").innerHTML = `0 - ${player2Name} (O)`;
 
     // clears the form inputs
     document.getElementById("player1-input").value = "";
