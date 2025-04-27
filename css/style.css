@@ -1,7 +1,13 @@
 :root {
+    --page-background-color: #FFC000;
     --main-background-color: #ffb048;
+    --main-text-color: #301934;
     --button-background-color: #fdd57e;
     --button-border-color: #4e4eff;
+    --button-text-color: #301934;
+    --disabled-button-text-color: #666666;
+    --game-button-text-color: #000000;
+    --game-button-hover-text-color: #585858;
 }
 
 body {
@@ -11,6 +17,7 @@ body {
 #page-container {
     width: 100vw;
     height: 100vh;
+    background-color: var(--page-background-color);
 }
 
 .main-wrapper {
@@ -19,6 +26,9 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0 10vw;
+    padding-top: 2vh;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
     background: var(--main-background-color);
 }
 
@@ -27,12 +37,13 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 5vh;
 }
 
 main h1 {
     font-size: calc(2vw + 3vh);
     font-weight: bolder;
+    color: var(--main-text-color);
 }
 
 .register-text {
@@ -47,7 +58,7 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 5vh;
 }
 
 .player-inputs {
@@ -55,13 +66,16 @@ form {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    gap: 5%;
+    gap: 1vw;
 }
 
 .player-inputs label {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 1vh;
+    font-size: calc(1vw + 1vh);
+    font-weight: bolder;
+    color: var(--main-text-color);
 }
 
 input[type="text"] {
@@ -69,20 +83,44 @@ input[type="text"] {
     background-color: var(--button-background-color);
     font-size: calc(1vw + 0.5vh);
     font-weight: bold;
+    color: var(--main-text-color);
     border: 2px solid var(--button-border-color);
     border-radius: 8px;
-    
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+}
+
+.buttons button {
+    width: 12vw;
+    height: 7vh;
+    font-size: calc(1vw + 0.5vh);
+    font-weight: bolder;
+    color: var(--button-text-color);
+    background-color: var(--button-background-color);
+    border: 2px solid var(--button-border-color);
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .buttons button:hover {
     cursor: pointer;
+    opacity: 0.9;
 }
 
 .reset-button {
     display: none;
 }
 
+.reset-button:disabled {
+    color: var(--disabled-button-text-color);
+}
+
 .reset-button:hover:disabled {
+    opacity: 1;
     cursor: unset;
 }
 
@@ -90,13 +128,15 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 4vh;
 }
 
 .players-info-box {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 1vw;
+    font-size: calc(1vw + 1vh);
+    color: var(--main-text-color);
 }
 
 .player1-display {
@@ -106,7 +146,10 @@ input[type="text"] {
 
 .winner-display {
     display: block;
-    min-height: 1rem;
+    min-height: calc(1vw + 1vh);
+    font-size: calc(1vw + 1vh);
+    font-weight: bold;
+    color: var(--main-text-color);
 }
 
 .gameboard {
@@ -121,6 +164,7 @@ input[type="text"] {
 .gameboard button {
     font-size: calc(1vw + 2vh);
     font-weight: bold;
+    color: var(--game-button-text-color);
     background-color: var(--button-background-color);
     border: 1px solid var(--button-border-color);
     transition: all 0.5s ease;
@@ -128,7 +172,7 @@ input[type="text"] {
 
 .gameboard button[filled="false"]:hover {
     cursor: pointer;
-    color: gray;
+    color: var(--game-button-hover-text-color);
 }
 
 .gameboard button[filled="true"]:hover {
